@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs/Observable";
 import "rxjs/add/observable/of";
+import "rxjs/add/observable/throw";
 
 import { Player } from "../player/player.model";
 
@@ -11,14 +12,15 @@ import { Player } from "../player/player.model";
 export class DataService {
 
   // Mock player data until server is available
-  private static players: Player[] = [
-    new Player("Mark", 3, 0),
-    new Player("Jacob", 2, 1),
-    new Player("Larry", 1, 2)
-  ];
-  private get players(): Player[] {
-    return DataService.players;
-  }
+  // private static players: Player[] = [
+  //   new Player("Mark", 3, 0),
+  //   new Player("Jacob", 2, 1),
+  //   new Player("Larry", 1, 2)
+  // ];
+  // private get players(): Player[] {
+  //   return DataService.players;
+  // }
+  private players: Player[] = [];
 
   /**
    * Creates a new instance of the DataService
@@ -32,10 +34,10 @@ export class DataService {
    */
   addPlayer(playerName: string): Observable<Player> {
     if (playerName == null || playerName.length === 0) {
-      throw new RangeError("Player name must be specified.");
+      return Observable.throw(new RangeError("Player name must be specified."));
     }
     if (this.players.some(p => p.name === playerName)) {
-      throw new RangeError("Player already exists. Try a different name.");
+      return Observable.throw(new RangeError("Player already exists. Try a different name."));
     }
 
     const newPlayer = new Player(playerName);
@@ -48,9 +50,10 @@ export class DataService {
    * @param {string} playerName - The player's name
    * @returns {Player} The player with the given name, or null if not found.
    */
-  getPlayer(playerName: string): Player {
+  getPlayer(playerName: string): Observable<Player> {
     const selectedPlayers = this.players.filter(p => p.name === playerName);
-    return selectedPlayers.length > 0 ? selectedPlayers[0] : null;
+    const player = selectedPlayers.length > 0 ? selectedPlayers[0] : null;
+    return Observable.of(player);
   }
 
   /**
