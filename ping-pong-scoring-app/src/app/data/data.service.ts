@@ -1,23 +1,29 @@
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
+import { Injectable } from "@angular/core";
+import { Observable } from "rxjs/Observable";
+import "rxjs/add/observable/of";
 
-import { Player } from '../player/player.model';
+import { Player } from "../player/player.model";
 
+/**
+ * Retrieves data from and updates data on the server.
+ */
 @Injectable()
 export class DataService {
 
+  // Mock player data until server is available
   private static players: Player[] = [
-    new Player('Mark', 3, 0),
-    new Player('Jacob', 2, 1),
-    new Player('Larry', 1, 2)
+    new Player("Mark", 3, 0),
+    new Player("Jacob", 2, 1),
+    new Player("Larry", 1, 2)
   ];
-
-  constructor() { }
-
   private get players(): Player[] {
     return DataService.players;
   }
+
+  /**
+   * Creates a new instance of the DataService
+   */
+  constructor() { }
 
   /**
    * Adds a new player
@@ -26,10 +32,10 @@ export class DataService {
    */
   addPlayer(playerName: string): Observable<Player> {
     if (playerName == null || playerName.length === 0) {
-      throw new RangeError('Player name must be specified.');
+      throw new RangeError("Player name must be specified.");
     }
     if (this.players.some(p => p.name === playerName)) {
-      throw new RangeError('Player already exists. Try a different name.');
+      throw new RangeError("Player already exists. Try a different name.");
     }
 
     const newPlayer = new Player(playerName);
@@ -63,12 +69,20 @@ export class DataService {
     return Observable.of(this.players.sort(p => parseFloat(p.winPercentage)).reverse());
   }
 
+  /**
+   * Records a win for the given player.
+   * @param {string} playerName - The player's name
+   */
   recordWin(playerName: string): Observable<Player> {
     const player = this.players.find(p => p.name === playerName);
     player.recordWin();
     return Observable.of(player);
   }
 
+  /**
+   * Records a loss for the given player.
+   * @param {string} playerName - The player's name
+   */
   recordLoss(playerName: string): Observable<Player> {
     const player = this.players.find(p => p.name === playerName);
     player.recordLoss();
