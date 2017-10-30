@@ -1,0 +1,29 @@
+<div class="jumbotron">
+  <h1 class="display-3">{{ text.appTitle }}</h1>
+</div>
+<div class="card">
+  <div class="card-body">
+    <h4 class="card-title">{{ text.pages.standings }}</h4>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>{{ text.labels.playerName }}</th>
+          <th>{{ text.labels.wins }}</th>
+          <th>{{ text.labels.losses }}</th>
+          <th>{{ text.labels.percentage }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let player of standings">
+          <th scope="row">{{ player.name }}</th>
+          <td>{{ player.wins }}</td>
+          <td>{{ player.losses }}</td>
+          <td>{{ player.winPercentage }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="card-footer">
+    <button class="btn btn-primary" (click)="navigate.emit(text.pages.home)">{{ text.buttons.home }}</button>
+  </div>
+</div>

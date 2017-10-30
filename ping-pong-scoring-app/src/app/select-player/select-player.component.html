@@ -1,0 +1,25 @@
+<ng-template #playerEntry>
+  <div class="card player-entry">
+    <div class="card-body">
+      <input type="text" #playerName />
+    </div>
+    <div class="card-footer text-center">
+      <button class="btn btn-success btn-sm" (click)="addPlayer(playerName.value); p.close()">
+        {{ text.buttons.ok }}
+      </button>
+      <button class="btn btn-danger btn-sm" (click)="p.close()">
+        {{ text.buttons.cancel }}
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+<select class="form-control player-select" id="player" [(ngModel)]="selectedPlayer">
+  <option></option>
+  <option *ngFor="let player of allPlayers" [ngValue]="player">
+    {{ player.name }}
+  </option>
+</select>
+<button class="btn btn-success btn-sm" #p="ngbPopover" placement="left" [ngbPopover]="playerEntry" popoverTitle="Enter Player Name">
+  {{ text.buttons.addPlayer }}
+</button>

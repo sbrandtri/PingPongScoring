@@ -1,0 +1,15 @@
+<div class="jumbotron">
+  <h1 class="display-3">{{ text.appTitle }}</h1>
+  <p class="lead">
+    {{ text.messages.home }}
+  </p>
+  <hr class="my-4">
+  <p class="lead">
+    <button class="btn btn-primary btn-lg" (click)="navigate.emit(text.pages.standings)">
+      {{ text.buttons.standings }}
+    </button>
+    <button class="btn btn-primary btn-lg" (click)="navigate.emit(text.pages.startGame)">
+      {{ text.buttons.newGame }}
+    </button>
+  </p>
+</div>

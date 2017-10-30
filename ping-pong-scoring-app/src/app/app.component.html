@@ -1,0 +1,9 @@
+<app-home *ngIf="currentPage === text.pages.home" (navigate)="navigate($event)"></app-home>
+<app-standings *ngIf="currentPage === text.pages.standings" (navigate)="navigate($event)"></app-standings>
+<app-start-game *ngIf="currentPage === text.pages.startGame"
+                (navigate)="navigate($event)"
+                (startGame)="start($event)">
+</app-start-game>
+<app-game *ngIf="currentPage === text.pages.game"
+          (navigate)="navigate($event)">
+</app-game>
