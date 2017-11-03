@@ -69,7 +69,7 @@ export class DataService {
    * Gets all of the players in descending order by win percentage.
    */
   getStandings(): Observable<Player[]> {
-    return Observable.of(this.players.sort(p => parseFloat(p.winPercentage)).reverse());
+    return Observable.of(this.players.sort((a, b) => b.winPercentage - a.winPercentage));
   }
 
   /**

@@ -53,9 +53,8 @@ export class Player {
    * Gets the player's win percentage.
    * @returns {number} The player's win percentage.
    */
-  get winPercentage(): string {
-    const pct =  this.gamesPlayed === 0 ? 0 : this.wins / this.gamesPlayed;
-    return (Math.round(pct * 1000) / 1000).toFixed(3);
+  get winPercentage(): number {
+    return this.gamesPlayed === 0 ? 0 : this.wins / this.gamesPlayed;
   }
 
   /**

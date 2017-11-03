@@ -20,18 +20,20 @@ describe("DataService", () => {
     it("throws an error when the name is null", () => {
       const service = new DataService();
       service.addPlayer(null).subscribe(
-        (result) => {},
-        (error) => {
+        result => {},
+        error => {
           expect(error).toBeDefined();
-        });
+        }
+      );
     });
     it("throws an error when the name is empty string", () => {
       const service = new DataService();
       service.addPlayer("").subscribe(
-        (result) => {},
-        (error) => {
+        result => {},
+        error => {
           expect(error).toBeDefined();
-        });
+        }
+      );
     });
     it("returns the newly added player", () => {
       const playerName = "Alice";
@@ -87,6 +89,55 @@ describe("DataService", () => {
             expect(playerList.some(p => p.name === players[1])).toBeTruthy();
           });
         });
+      });
+    });
+  });
+
+  describe("Call getStandings", () => {
+    it("returns the players in order by win percentage", () => {
+      const gamesPlayed = 5;
+      const players = [
+        {
+          name: "Alice",
+          wins: 2
+        },
+        {
+          name: "Bob",
+          wins: 1
+        },
+        {
+          name: "Carol",
+          wins: 4
+        },
+        {
+          name: "Dan",
+          wins: 3
+        }
+      ];
+
+      const service = new DataService();
+      for (let index = 0; index < players.length; index++) {
+        const player = players[index];
+        service.addPlayer(player.name).subscribe(() => {
+          for (let gp = 0; gp < gamesPlayed; gp++) {
+            if (gp < player.wins) {
+              service.recordWin(player.name).subscribe();
+            } else {
+              service.recordLoss(player.name).subscribe();
+            }
+          }
+        });
+      }
+      const orderedPlayers =
+        players.sort((a, b) => b.wins - a.wins);
+      service.getStandings().subscribe(standings => {
+        expect(standings).toBeDefined();
+        expect(standings.length).toBe(players.length);
+        for (let index = 0; index < standings.length; index++) {
+          const actualPlayer = standings[index];
+          const expectedPlayer = orderedPlayers[index];
+          expect(actualPlayer.name).toBe(expectedPlayer.name);
+        }
       });
     });
   });

@@ -1,0 +1,155 @@
+{
+	"_type": "export",
+	"__export_format": 3,
+	"__export_date": "2017-11-03T02:30:36.191Z",
+	"__export_source": "insomnia.desktop.app:v5.10.1",
+	"resources": [
+		{
+			"_id": "wrk_21dd30babe1e487d8a969885c4d36b63",
+			"parentId": null,
+			"modified": 1509675654020,
+			"created": 1509675558565,
+			"name": "Ping Pong Scoring API",
+			"description": "",
+			"_type": "workspace"
+		},
+		{
+			"_id": "env_5a46ff9d8a944d799e81c85fc8759403",
+			"parentId": "wrk_21dd30babe1e487d8a969885c4d36b63",
+			"modified": 1509675558584,
+			"created": 1509675558584,
+			"name": "Base Environment",
+			"data": {},
+			"color": null,
+			"isPrivate": false,
+			"_type": "environment"
+		},
+		{
+			"_id": "jar_eafc40f6257848368121e94ed2e84ed4",
+			"parentId": "wrk_21dd30babe1e487d8a969885c4d36b63",
+			"modified": 1509675558568,
+			"created": 1509675558568,
+			"name": "Default Jar",
+			"cookies": [],
+			"_type": "cookie_jar"
+		},
+		{
+			"_id": "req_c64bec9b2e0f4af1843ae04303a1a0da",
+			"parentId": "wrk_21dd30babe1e487d8a969885c4d36b63",
+			"modified": 1509675618788,
+			"created": 1509675589091,
+			"url": "http://localhost:3000/players",
+			"name": "Get Players",
+			"description": "",
+			"method": "GET",
+			"body": {},
+			"parameters": [],
+			"headers": [],
+			"authentication": {},
+			"metaSortKey": -1509675589091,
+			"settingStoreCookies": true,
+			"settingSendCookies": true,
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"_type": "request"
+		},
+		{
+			"_id": "req_bec7616b3caa4ad2a4d1536dc44ff305",
+			"parentId": "wrk_21dd30babe1e487d8a969885c4d36b63",
+			"modified": 1509675986357,
+			"created": 1509675685332,
+			"url": "http://localhost:3000/players",
+			"name": "Add Player",
+			"description": "",
+			"method": "POST",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n\t\"name\": \"Shawn\"\n}\n"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Content-Type",
+					"value": "application/json",
+					"id": "pair_aa19b31857a64e9cb85b331ee519947e"
+				}
+			],
+			"authentication": {},
+			"metaSortKey": -1509675685332,
+			"settingStoreCookies": true,
+			"settingSendCookies": true,
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"_type": "request"
+		},
+		{
+			"_id": "req_944a023b736e471cbdb7fbe84bc18fa7",
+			"parentId": "wrk_21dd30babe1e487d8a969885c4d36b63",
+			"modified": 1509675945256,
+			"created": 1509675830871,
+			"url": "http://localhost:3000/player/59fbd2e9a9e3e54a58715ba5",
+			"name": "Delete Player",
+			"description": "",
+			"method": "DELETE",
+			"body": {},
+			"parameters": [],
+			"headers": [],
+			"authentication": {},
+			"metaSortKey": -1509675830871,
+			"settingStoreCookies": true,
+			"settingSendCookies": true,
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"_type": "request"
+		},
+		{
+			"_id": "req_82a17c22541f4215b8b3a0f8302f3631",
+			"parentId": "wrk_21dd30babe1e487d8a969885c4d36b63",
+			"modified": 1509676005477,
+			"created": 1509675964934,
+			"url": "http://localhost:3000/player/59fbd3d5561b8f4cfc573320",
+			"name": "Get Player",
+			"description": "",
+			"method": "GET",
+			"body": {},
+			"parameters": [],
+			"headers": [],
+			"authentication": {},
+			"metaSortKey": -1509675589041,
+			"settingStoreCookies": true,
+			"settingSendCookies": true,
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"_type": "request"
+		},
+		{
+			"_id": "req_b2afc619d2a34e179459735f0c366f8b",
+			"parentId": "wrk_21dd30babe1e487d8a969885c4d36b63",
+			"modified": 1509676097041,
+			"created": 1509676032340,
+			"url": "http://localhost:3000/player/59fbd3d5561b8f4cfc573320",
+			"name": "Update Player",
+			"description": "",
+			"method": "PUT",
+			"body": {
+				"mimeType": "application/json",
+				"text": "{\n\t\"losses\": 1\n}\n"
+			},
+			"parameters": [],
+			"headers": [
+				{
+					"name": "Content-Type",
+					"value": "application/json",
+					"id": "pair_e037dc064c114f7187d682758cf14189"
+				}
+			],
+			"authentication": {},
+			"metaSortKey": -1509675588991,
+			"settingStoreCookies": true,
+			"settingSendCookies": true,
+			"settingDisableRenderRequestBody": false,
+			"settingEncodeUrl": true,
+			"_type": "request"
+		}
+	]
+}
