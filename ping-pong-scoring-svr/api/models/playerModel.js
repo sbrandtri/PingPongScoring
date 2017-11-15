@@ -5,6 +5,7 @@ var Schema = mongoose.Schema;
 var PlayerSchema = new Schema({
   name: {
     type: String,
+    unique: true,
     required: "Please enter the player's name"
   },
   wins: {
