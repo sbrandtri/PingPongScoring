@@ -1,0 +1,11 @@
+{
+	"folders": [
+		{
+			"path": "ping-pong-scoring-svr"
+		},
+		{
+			"path": "ping-pong-scoring-app"
+		}
+	],
+	"settings": {}
+}
