@@ -14,6 +14,7 @@ describe("SelectPlayerComponent", () => {
     TestBed.configureTestingModule({
       declarations: [ SelectPlayerComponent ],
       imports: [ NgbModule.forRoot() ],
+      // TODO: Mock DataService
       providers: [ DataService, TextService, NgbPopoverConfig ],
       schemas: [ NO_ERRORS_SCHEMA ]
     })

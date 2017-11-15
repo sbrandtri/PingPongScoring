@@ -1,31 +1,21 @@
+import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable } from "rxjs/Observable";
-import "rxjs/add/observable/of";
-import "rxjs/add/observable/throw";
+import { Observable } from "rxjs/Rx";
 
 import { Player } from "../player/player.model";
+import { PlayerContract } from "../player/player-contract.interface";
 
 /**
  * Retrieves data from and updates data on the server.
  */
 @Injectable()
 export class DataService {
-
-  // Mock player data until server is available
-  // private static players: Player[] = [
-  //   new Player("Mark", 3, 0),
-  //   new Player("Jacob", 2, 1),
-  //   new Player("Larry", 1, 2)
-  // ];
-  // private get players(): Player[] {
-  //   return DataService.players;
-  // }
-  private players: Player[] = [];
+  private baseUrl = "http://localhost:8080/api/";
 
   /**
    * Creates a new instance of the DataService
    */
-  constructor() { }
+  constructor(private readonly http: HttpClient) {}
 
   /**
    * Adds a new player
@@ -36,59 +26,73 @@ export class DataService {
     if (playerName == null || playerName.length === 0) {
       return Observable.throw(new RangeError("Player name must be specified."));
     }
-    if (this.players.some(p => p.name === playerName)) {
-      return Observable.throw(new RangeError("Player already exists. Try a different name."));
-    }
 
-    const newPlayer = new Player(playerName);
-    this.players.push(newPlayer);
-    return Observable.of(newPlayer);
+    return this.http
+      .post<PlayerContract>(this.baseUrl + "players", {
+        name: playerName
+      })
+      .map(this.mapContract);
   }
 
   /**
    * Gets a player by name
-   * @param {string} playerName - The player's name
+   * @param {string} playerId - The player's ID
    * @returns {Player} The player with the given name, or null if not found.
    */
-  getPlayer(playerName: string): Observable<Player> {
-    const selectedPlayers = this.players.filter(p => p.name === playerName);
-    const player = selectedPlayers.length > 0 ? selectedPlayers[0] : null;
-    return Observable.of(player);
+  getPlayer(playerId: string): Observable<Player> {
+    return this.http
+      .get<PlayerContract>(this.baseUrl + "player/" + playerId)
+      .map(this.mapContract);
   }
 
   /**
    * Gets all of the players.
    */
   getPlayers(): Observable<Player[]> {
-    const players: Player[] = [];
-    this.players.forEach(p => players.push(p));
-    return Observable.of(players);
+    return this.http
+      .get<PlayerContract[]>(this.baseUrl + "players")
+      .map(players => players.map(p => this.mapContract(p)));
   }
 
   /**
    * Gets all of the players in descending order by win percentage.
    */
   getStandings(): Observable<Player[]> {
-    return Observable.of(this.players.sort((a, b) => b.winPercentage - a.winPercentage));
+    return this.getPlayers().map(players =>
+      players.sort((a, b) => b.winPercentage - a.winPercentage)
+    );
   }
 
   /**
    * Records a win for the given player.
-   * @param {string} playerName - The player's name
+   * @param {string} playerId - The player's ID
    */
-  recordWin(playerName: string): Observable<Player> {
-    const player = this.players.find(p => p.name === playerName);
-    player.recordWin();
-    return Observable.of(player);
+  recordWin(playerId: string): Observable<Player> {
+    return this.getPlayer(playerId).flatMap(player => {
+      player.recordWin();
+      return this.http
+        .post<PlayerContract>(this.baseUrl + "player/" + playerId, player)
+        .map(this.mapContract);
+    });
   }
 
   /**
    * Records a loss for the given player.
-   * @param {string} playerName - The player's name
+   * @param {string} playerId - The player's ID
    */
-  recordLoss(playerName: string): Observable<Player> {
-    const player = this.players.find(p => p.name === playerName);
-    player.recordLoss();
-    return Observable.of(player);
+  recordLoss(playerId: string): Observable<Player> {
+    return this.getPlayer(playerId).flatMap(player => {
+      player.recordLoss();
+      return this.http
+        .post<PlayerContract>(this.baseUrl + "player/" + playerId, player)
+        .map(this.mapContract);
+    });
+  }
+
+  /**
+   * Maps a PlayerContract to a Player
+   */
+  private mapContract(contract: PlayerContract): Player {
+    return new Player(contract);
   }
 }

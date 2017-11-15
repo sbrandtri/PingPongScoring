@@ -10,8 +10,8 @@ describe("GameComponent", () => {
   let component: GameComponent;
   let fixture: ComponentFixture<GameComponent>;
   let mockGameService: any;
-  const player1 = new PlayerScore("Alice");
-  const player2 = new PlayerScore("Bob");
+  const player1 = PlayerScore.create("Alice");
+  const player2 = PlayerScore.create("Bob");
   const players: PlayerScore[] = [ player1, player2 ];
 
   beforeEach(

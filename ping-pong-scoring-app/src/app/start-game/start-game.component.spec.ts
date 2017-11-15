@@ -12,6 +12,7 @@ describe("StartGameComponent", () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ StartGameComponent ],
+      // TODO: Mock DataService
       providers: [ DataService, TextService ],
       schemas: [ NO_ERRORS_SCHEMA ]
     })

@@ -1,4 +1,5 @@
 import { BrowserModule } from "@angular/platform-browser";
+import { HttpClientModule } from "@angular/common/http";
 import { NgModule } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
@@ -12,7 +13,7 @@ import { StandingsComponent } from "./standings/standings.component";
 import { StartGameComponent } from "./start-game/start-game.component";
 import { SelectPlayerComponent } from "./select-player/select-player.component";
 import { GameComponent } from "./game/game.component";
-import { MockGameDirective } from './testing/mock-game.directive';
+import { MockGameDirective } from "./testing/mock-game.directive";
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { MockGameDirective } from './testing/mock-game.directive';
   imports: [
     BrowserModule,
     FormsModule,
+    HttpClientModule,
     NgbModule.forRoot()
   ],
   providers: [
@@ -36,4 +38,4 @@ import { MockGameDirective } from './testing/mock-game.directive';
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

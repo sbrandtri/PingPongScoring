@@ -10,7 +10,6 @@ import { TextService } from "../text/text.service";
   styleUrls: ["./select-player.component.scss"]
 })
 export class SelectPlayerComponent implements OnInit {
-
   @Input() allPlayers: Player[] = [];
   @Input()
   get selectedPlayer(): Player {
@@ -28,24 +27,31 @@ export class SelectPlayerComponent implements OnInit {
   constructor(
     protected readonly data: DataService,
     protected readonly text: TextService
-  ) { }
+  ) {}
 
   ngOnInit() {
     if (this.allPlayers == null || this.allPlayers.length === 0) {
-      this.data.getPlayers().subscribe(players =>
-        this.allPlayers = this.sortPlayersByName(players));
+      this.data
+        .getPlayers()
+        .subscribe(
+          players => (this.allPlayers = this.sortPlayersByName(players))
+        );
     } else {
       this.allPlayers = this.sortPlayersByName(this.allPlayers);
     }
   }
 
   addPlayer(name: string): void {
-    this.data.addPlayer(name)
-      .subscribe(newPlayer => {
+    this.data.addPlayer(name).subscribe(
+      newPlayer => {
         this.allPlayers.push(newPlayer);
         this.allPlayers = this.sortPlayersByName(this.allPlayers);
         this.selectedPlayer = newPlayer;
-      });
+      },
+      error => {
+        console.log(error);
+      }
+    );
   }
 
   private sortPlayersByName(players: Player[]): Player[] {
