@@ -5,12 +5,15 @@ import { DataService } from "../data/data.service";
 import { Player } from "../player/player.model";
 import { PlayerScore } from "../player/player-score.model";
 import { PlayerContract } from "../player/player-contract.interface";
+import { MockDataService } from "../testing/mock-data.service";
 
 describe("GameService", () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      // TODO: Mock DataService
-      providers: [DataService, GameService]
+      providers: [
+        { provide: DataService, useClass: MockDataService },
+        GameService
+      ]
     });
   });
 
@@ -79,9 +82,7 @@ describe("GameService", () => {
     it(
       "should throw an error",
       inject([GameService], (service: GameService) => {
-        expect(() =>
-          service.awardPoint(PlayerScore.create(""))
-        ).toThrowError();
+        expect(() => service.awardPoint(PlayerScore.create(""))).toThrowError();
       })
     );
   });

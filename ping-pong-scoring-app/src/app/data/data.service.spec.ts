@@ -1,204 +1,203 @@
-// import { HttpClientTestingModule } from "@angular/common/http/testing";
-// import { HttpTestingController } from "@angular/common/http/testing/src/api";
-// import { TestBed, inject } from "@angular/core/testing";
+import { HttpClientTestingModule, HttpTestingController } from "@angular/common/http/testing";
+import { TestBed, inject } from "@angular/core/testing";
 
-// import { DataService } from "./data.service";
-// import { PlayerContract } from "../player/player-contract.interface";
+import { DataService } from "./data.service";
+import { PlayerContract } from "../player/player-contract.interface";
 
-// describe("DataService", () => {
-//   beforeEach(() => {
-//     TestBed.configureTestingModule({
-//       imports: [HttpClientTestingModule],
-//       providers: [DataService]
-//     });
-//   });
+describe("DataService", () => {
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+      providers: [DataService]
+    });
+  });
 
-//   afterEach(
-//     inject([HttpTestingController], (httpMock: HttpTestingController) => {
-//       httpMock.verify();
-//     })
-//   );
+  afterEach(
+    inject([HttpTestingController], (httpMock: HttpTestingController) => {
+      httpMock.verify();
+    })
+  );
 
-//   it(
-//     "should be created",
-//     inject([DataService], (service: DataService) => {
-//       expect(service).toBeTruthy();
-//     })
-//   );
+  it(
+    "should be created",
+    inject([DataService], (service: DataService) => {
+      expect(service).toBeTruthy();
+    })
+  );
 
-//   describe("Call addPlayer", () => {
-//     it(
-//       "throws an error when the name is null",
-//       inject([DataService], (service: DataService) => {
-//         service.addPlayer(null).subscribe(
-//           result => {},
-//           error => {
-//             expect(error).toBeDefined();
-//           }
-//         );
-//       })
-//     );
+  describe("Call addPlayer", () => {
+    it(
+      "throws an error when the name is null",
+      inject([DataService], (service: DataService) => {
+        service.addPlayer(null).subscribe(
+          result => {},
+          error => {
+            expect(error).toBeDefined();
+          }
+        );
+      })
+    );
 
-//     it(
-//       "throws an error when the name is empty string",
-//       inject(
-//         [DataService, HttpTestingController],
-//         (service: DataService, httpMock: HttpTestingController) => {
-//           service.addPlayer("").subscribe(
-//             result => {},
-//             error => {
-//               expect(error).toBeDefined();
-//             }
-//           );
-//         }
-//       )
-//     );
+    it(
+      "throws an error when the name is empty string",
+      inject(
+        [DataService, HttpTestingController],
+        (service: DataService, httpMock: HttpTestingController) => {
+          service.addPlayer("").subscribe(
+            result => {},
+            error => {
+              expect(error).toBeDefined();
+            }
+          );
+        }
+      )
+    );
 
-//     it(
-//       "returns the newly added player",
-//       inject(
-//         [DataService, HttpTestingController],
-//         (service: DataService, httpMock: HttpTestingController) => {
-//           const testPlayer: PlayerContract = {
-//             _id: "abc123",
-//             name: "Alice",
-//             wins: 0,
-//             losses: 0
-//           };
-//           service.addPlayer(testPlayer.name).subscribe(player => {
-//             expect(player).toBeDefined();
-//             expect(player.name).toBe(testPlayer.name);
-//           });
-//           const req = httpMock.expectOne("http://localhost:8080/api/players");
-//           expect(req.request.method).toEqual("POST");
-//           req.flush(testPlayer);
-//         }
-//       )
-//     );
-//   });
+    it(
+      "returns the newly added player",
+      inject(
+        [DataService, HttpTestingController],
+        (service: DataService, httpMock: HttpTestingController) => {
+          const testPlayer: PlayerContract = {
+            _id: "abc123",
+            name: "Alice",
+            wins: 0,
+            losses: 0
+          };
+          service.addPlayer(testPlayer.name).subscribe(player => {
+            expect(player).toBeDefined();
+            expect(player.name).toBe(testPlayer.name);
+          });
+          const req = httpMock.expectOne("http://localhost:8080/api/players");
+          expect(req.request.method).toEqual("POST");
+          req.flush(testPlayer);
+        }
+      )
+    );
+  });
 
-//   describe("Call getPlayer", () => {
-//     const playerName = "Alice";
-//     it(
-//       "returns null if the player is not found",
-//       inject(
-//         [DataService, HttpTestingController],
-//         (service: DataService, httpMock: HttpTestingController) => {
-//           service.addPlayer(playerName).subscribe(addedPlayer => {
-//             service.getPlayer("Bob").subscribe(player => {
-//               expect(player).toBeNull();
-//             });
-//           });
-//         }
-//       )
-//     );
-//     it(
-//       "returns the Player if found",
-//       inject(
-//         [DataService, HttpTestingController],
-//         (service: DataService, httpMock: HttpTestingController) => {
-//           service.addPlayer(playerName).subscribe(addedPlayer => {
-//             service.getPlayer(playerName).subscribe(player => {
-//               expect(player).toBeDefined();
-//               expect(player.name).toBe(playerName);
-//             });
-//           });
-//         }
-//       )
-//     );
-//   });
+  describe("Call getPlayer", () => {
+    const playerName = "Alice";
+    it(
+      "returns null if the player is not found",
+      inject(
+        [DataService, HttpTestingController],
+        (service: DataService, httpMock: HttpTestingController) => {
+          service.addPlayer(playerName).subscribe(addedPlayer => {
+            service.getPlayer("Bob").subscribe(player => {
+              expect(player).toBeNull();
+            });
+          });
+        }
+      )
+    );
+    it(
+      "returns the Player if found",
+      inject(
+        [DataService, HttpTestingController],
+        (service: DataService, httpMock: HttpTestingController) => {
+          service.addPlayer(playerName).subscribe(addedPlayer => {
+            service.getPlayer(playerName).subscribe(player => {
+              expect(player).toBeDefined();
+              expect(player.name).toBe(playerName);
+            });
+          });
+        }
+      )
+    );
+  });
 
-//   describe("Call getPlayers", () => {
-//     it(
-//       "initially returns no players",
-//       inject(
-//         [DataService, HttpTestingController],
-//         (service: DataService, httpMock: HttpTestingController) => {
-//           service.getPlayers().subscribe(playerList => {
-//             expect(playerList).toBeDefined();
-//             expect(playerList.length).toBe(0);
-//           });
-//         }
-//       )
-//     );
+  describe("Call getPlayers", () => {
+    it(
+      "initially returns no players",
+      inject(
+        [DataService, HttpTestingController],
+        (service: DataService, httpMock: HttpTestingController) => {
+          service.getPlayers().subscribe(playerList => {
+            expect(playerList).toBeDefined();
+            expect(playerList.length).toBe(0);
+          });
+        }
+      )
+    );
 
-//     it(
-//       "returns players that were added",
-//       inject(
-//         [DataService, HttpTestingController],
-//         (service: DataService, httpMock: HttpTestingController) => {
-//           const players = ["Alice", "Bob"];
-//           service.addPlayer(players[0]).subscribe(p1 => {
-//             expect(p1.name).toBe(players[0]);
-//             service.addPlayer(players[1]).subscribe(p2 => {
-//               expect(p2.name).toBe(players[1]);
-//               service.getPlayers().subscribe(playerList => {
-//                 expect(playerList).toBeDefined();
-//                 expect(playerList.length).toBe(players.length);
-//                 expect(
-//                   playerList.some(p => p.name === players[0])
-//                 ).toBeTruthy();
-//                 expect(
-//                   playerList.some(p => p.name === players[1])
-//                 ).toBeTruthy();
-//               });
-//             });
-//           });
-//         }
-//       )
-//     );
-//   });
+    it(
+      "returns players that were added",
+      inject(
+        [DataService, HttpTestingController],
+        (service: DataService, httpMock: HttpTestingController) => {
+          const players = ["Alice", "Bob"];
+          service.addPlayer(players[0]).subscribe(p1 => {
+            expect(p1.name).toBe(players[0]);
+            service.addPlayer(players[1]).subscribe(p2 => {
+              expect(p2.name).toBe(players[1]);
+              service.getPlayers().subscribe(playerList => {
+                expect(playerList).toBeDefined();
+                expect(playerList.length).toBe(players.length);
+                expect(
+                  playerList.some(p => p.name === players[0])
+                ).toBeTruthy();
+                expect(
+                  playerList.some(p => p.name === players[1])
+                ).toBeTruthy();
+              });
+            });
+          });
+        }
+      )
+    );
+  });
 
-//   describe("Call getStandings", () => {
-//     it(
-//       "returns the players in order by win percentage",
-//       inject(
-//         [DataService, HttpTestingController],
-//         (service: DataService, httpMock: HttpTestingController) => {
-//           const gamesPlayed = 5;
-//           const players = [
-//             {
-//               name: "Alice",
-//               wins: 2
-//             },
-//             {
-//               name: "Bob",
-//               wins: 1
-//             },
-//             {
-//               name: "Carol",
-//               wins: 4
-//             },
-//             {
-//               name: "Dan",
-//               wins: 3
-//             }
-//           ];
+  describe("Call getStandings", () => {
+    it(
+      "returns the players in order by win percentage",
+      inject(
+        [DataService, HttpTestingController],
+        (service: DataService, httpMock: HttpTestingController) => {
+          const gamesPlayed = 5;
+          const players = [
+            {
+              name: "Alice",
+              wins: 2
+            },
+            {
+              name: "Bob",
+              wins: 1
+            },
+            {
+              name: "Carol",
+              wins: 4
+            },
+            {
+              name: "Dan",
+              wins: 3
+            }
+          ];
 
-//           for (let index = 0; index < players.length; index++) {
-//             const player = players[index];
-//             service.addPlayer(player.name).subscribe(() => {
-//               for (let gp = 0; gp < gamesPlayed; gp++) {
-//                 if (gp < player.wins) {
-//                   service.recordWin(player.name).subscribe();
-//                 } else {
-//                   service.recordLoss(player.name).subscribe();
-//                 }
-//               }
-//             });
-//           }
-//           const orderedPlayers = players.sort((a, b) => b.wins - a.wins);
-//           service.getStandings().subscribe(standings => {
-//             expect(standings).toBeDefined();
-//             expect(standings.length).toBe(players.length);
-//             for (let index = 0; index < standings.length; index++) {
-//               const actualPlayer = standings[index];
-//               const expectedPlayer = orderedPlayers[index];
-//               expect(actualPlayer.name).toBe(expectedPlayer.name);
-//             }
-//           });
-//         }
-//       )
-//     );
-//   });
-// });
+          for (let index = 0; index < players.length; index++) {
+            const player = players[index];
+            service.addPlayer(player.name).subscribe(() => {
+              for (let gp = 0; gp < gamesPlayed; gp++) {
+                if (gp < player.wins) {
+                  service.recordWin(player.name).subscribe();
+                } else {
+                  service.recordLoss(player.name).subscribe();
+                }
+              }
+            });
+          }
+          const orderedPlayers = players.sort((a, b) => b.wins - a.wins);
+          service.getStandings().subscribe(standings => {
+            expect(standings).toBeDefined();
+            expect(standings.length).toBe(players.length);
+            for (let index = 0; index < standings.length; index++) {
+              const actualPlayer = standings[index];
+              const expectedPlayer = orderedPlayers[index];
+              expect(actualPlayer.name).toBe(expectedPlayer.name);
+            }
+          });
+        }
+      )
+    );
+  });
+});
