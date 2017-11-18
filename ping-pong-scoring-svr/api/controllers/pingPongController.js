@@ -20,8 +20,11 @@ exports.createPlayer = function(req, res) {
 
 exports.getPlayer = function(req, res) {
   Player.findById(req.params.id, function(err, player) {
-    if (err) res.send(err);
-    res.json(player);
+    if (err) {
+      console.log(err);
+    } else {
+      res.json(player);
+    }
   });
 };
 

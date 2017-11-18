@@ -1,4 +1,7 @@
-import { HttpClientTestingModule, HttpTestingController } from "@angular/common/http/testing";
+import {
+  HttpClientTestingModule,
+  HttpTestingController
+} from "@angular/common/http/testing";
 import { TestBed, inject } from "@angular/core/testing";
 
 import { DataService } from "./data.service";
@@ -77,17 +80,31 @@ describe("DataService", () => {
   });
 
   describe("Call getPlayer", () => {
-    const playerName = "Alice";
+    const testPlayer: PlayerContract = {
+      _id: "abc123",
+      name: "Alice",
+      wins: 0,
+      losses: 0
+    };
+    const badPlayerId = "zzz456";
     it(
       "returns null if the player is not found",
       inject(
         [DataService, HttpTestingController],
         (service: DataService, httpMock: HttpTestingController) => {
-          service.addPlayer(playerName).subscribe(addedPlayer => {
-            service.getPlayer("Bob").subscribe(player => {
+          service.addPlayer(testPlayer.name).subscribe(addedPlayer => {
+            service.getPlayer(badPlayerId).subscribe(player => {
               expect(player).toBeNull();
             });
           });
+          const req = httpMock.expectOne("http://localhost:8080/api/players");
+          expect(req.request.method).toEqual("POST");
+          req.flush(testPlayer);
+          const req2 = httpMock.expectOne(
+            "http://localhost:8080/api/player/" + badPlayerId
+          );
+          expect(req2.request.method).toEqual("GET");
+          req2.flush(null);
         }
       )
     );
@@ -96,12 +113,20 @@ describe("DataService", () => {
       inject(
         [DataService, HttpTestingController],
         (service: DataService, httpMock: HttpTestingController) => {
-          service.addPlayer(playerName).subscribe(addedPlayer => {
-            service.getPlayer(playerName).subscribe(player => {
+          service.addPlayer(testPlayer.name).subscribe(addedPlayer => {
+            service.getPlayer(testPlayer._id).subscribe(player => {
               expect(player).toBeDefined();
-              expect(player.name).toBe(playerName);
+              expect(player.name).toBe(testPlayer.name);
             });
           });
+          const req = httpMock.expectOne("http://localhost:8080/api/players");
+          expect(req.request.method).toEqual("POST");
+          req.flush(testPlayer);
+          const req2 = httpMock.expectOne(
+            "http://localhost:8080/api/player/" + testPlayer._id
+          );
+          expect(req2.request.method).toEqual("GET");
+          req2.flush(testPlayer);
         }
       )
     );
@@ -113,10 +138,14 @@ describe("DataService", () => {
       inject(
         [DataService, HttpTestingController],
         (service: DataService, httpMock: HttpTestingController) => {
+          const players = [];
           service.getPlayers().subscribe(playerList => {
             expect(playerList).toBeDefined();
             expect(playerList.length).toBe(0);
           });
+          const req = httpMock.expectOne("http://localhost:8080/api/players");
+          expect(req.request.method).toEqual("GET");
+          req.flush(players);
         }
       )
     );
@@ -126,23 +155,46 @@ describe("DataService", () => {
       inject(
         [DataService, HttpTestingController],
         (service: DataService, httpMock: HttpTestingController) => {
-          const players = ["Alice", "Bob"];
-          service.addPlayer(players[0]).subscribe(p1 => {
-            expect(p1.name).toBe(players[0]);
-            service.addPlayer(players[1]).subscribe(p2 => {
-              expect(p2.name).toBe(players[1]);
+          const players: PlayerContract[] = [
+            {
+              _id: "abc123",
+              name: "Alice",
+              wins: 0,
+              losses: 0
+            },
+            {
+              _id: "bcd135",
+              name: "Bob",
+              wins: 0,
+              losses: 0
+            }
+          ];
+          service.addPlayer(players[0].name).subscribe(p1 => {
+            expect(p1.id).toBe(players[0]._id);
+            expect(p1.name).toBe(players[0].name);
+            service.addPlayer(players[1].name).subscribe(p2 => {
+              expect(p2.id).toBe(players[1]._id);
+              expect(p2.name).toBe(players[1].name);
               service.getPlayers().subscribe(playerList => {
                 expect(playerList).toBeDefined();
                 expect(playerList.length).toBe(players.length);
                 expect(
-                  playerList.some(p => p.name === players[0])
+                  playerList.some(p => p.id === players[0]._id)
                 ).toBeTruthy();
                 expect(
-                  playerList.some(p => p.name === players[1])
+                  playerList.some(p => p.id === players[1]._id)
                 ).toBeTruthy();
               });
             });
           });
+          players.forEach(p => {
+            const req = httpMock.expectOne("http://localhost:8080/api/players");
+            expect(req.request.method).toEqual("POST");
+            req.flush(p);
+          });
+          const req2 = httpMock.expectOne("http://localhost:8080/api/players");
+          expect(req2.request.method).toEqual("GET");
+          req2.flush(players);
         }
       )
     );
@@ -155,37 +207,40 @@ describe("DataService", () => {
         [DataService, HttpTestingController],
         (service: DataService, httpMock: HttpTestingController) => {
           const gamesPlayed = 5;
-          const players = [
+          const players: PlayerContract[] = [
             {
+              _id: "a1",
               name: "Alice",
-              wins: 2
+              wins: 2,
+              losses: 3
             },
             {
+              _id: "b2",
               name: "Bob",
-              wins: 1
+              wins: 1,
+              losses: 4
             },
             {
+              _id: "c3",
               name: "Carol",
-              wins: 4
+              wins: 4,
+              losses: 1
             },
             {
+              _id: "d4",
               name: "Dan",
-              wins: 3
+              wins: 3,
+              losses: 2
             }
           ];
 
-          for (let index = 0; index < players.length; index++) {
-            const player = players[index];
-            service.addPlayer(player.name).subscribe(() => {
-              for (let gp = 0; gp < gamesPlayed; gp++) {
-                if (gp < player.wins) {
-                  service.recordWin(player.name).subscribe();
-                } else {
-                  service.recordLoss(player.name).subscribe();
-                }
-              }
-            });
-          }
+          players.forEach(player => {
+            service.addPlayer(player.name).subscribe(() => {});
+            const req = httpMock.expectOne("http://localhost:8080/api/players");
+            expect(req.request.method).toEqual("POST");
+            req.flush(player);
+          });
+
           const orderedPlayers = players.sort((a, b) => b.wins - a.wins);
           service.getStandings().subscribe(standings => {
             expect(standings).toBeDefined();
@@ -196,6 +251,9 @@ describe("DataService", () => {
               expect(actualPlayer.name).toBe(expectedPlayer.name);
             }
           });
+          const req2 = httpMock.expectOne("http://localhost:8080/api/players");
+          expect(req2.request.method).toEqual("GET");
+          req2.flush(players);
         }
       )
     );

@@ -93,6 +93,9 @@ export class DataService {
    * Maps a PlayerContract to a Player
    */
   private mapContract(contract: PlayerContract): Player {
+    if (contract == null || contract._id == null) {
+      return null;
+    }
     return new Player(contract);
   }
 }
