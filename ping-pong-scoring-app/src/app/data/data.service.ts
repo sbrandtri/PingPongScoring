@@ -35,7 +35,7 @@ export class DataService {
   }
 
   /**
-   * Gets a player by name
+   * Gets a player by ID
    * @param {string} playerId - The player's ID
    * @returns {Player} The player with the given name, or null if not found.
    */
@@ -85,11 +85,14 @@ export class DataService {
     });
   }
 
+  /**
+   * Updates a Player.
+   */
   private updatePlayer(player: PlayerContract): Observable<Player> {
     return this.http
-    .put<PlayerContract>(this.baseUrl + "player/" + player._id, player)
-    .map(this.mapContract);
-}
+      .put<PlayerContract>(this.baseUrl + "player/" + player._id, player)
+      .map(this.mapContract);
+  }
 
   /**
    * Maps a PlayerContract to a Player
