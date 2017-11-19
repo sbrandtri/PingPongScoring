@@ -70,9 +70,7 @@ export class DataService {
   recordWin(playerId: string): Observable<Player> {
     return this.getPlayer(playerId).flatMap(player => {
       player.recordWin();
-      return this.http
-        .post<PlayerContract>(this.baseUrl + "player/" + playerId, player)
-        .map(this.mapContract);
+      return this.updatePlayer(player.getContract());
     });
   }
 
@@ -83,11 +81,15 @@ export class DataService {
   recordLoss(playerId: string): Observable<Player> {
     return this.getPlayer(playerId).flatMap(player => {
       player.recordLoss();
-      return this.http
-        .post<PlayerContract>(this.baseUrl + "player/" + playerId, player)
-        .map(this.mapContract);
+      return this.updatePlayer(player.getContract());
     });
   }
+
+  private updatePlayer(player: PlayerContract): Observable<Player> {
+    return this.http
+    .put<PlayerContract>(this.baseUrl + "player/" + player._id, player)
+    .map(this.mapContract);
+}
 
   /**
    * Maps a PlayerContract to a Player

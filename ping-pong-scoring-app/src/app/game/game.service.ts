@@ -105,15 +105,15 @@ export class GameService {
     const losingScore = this.players
       .map(p => p.score)
       .reduce((a, b) => Math.min(a, b));
+    const losingPlayer = this.players.find(p => p.score === losingScore);
+
     const winningScore = this.players
       .map(p => p.score)
       .reduce((a, b) => Math.max(a, b));
-    this.dataService.recordLoss(
-      this.players.find(p => p.score === losingScore).name
-    );
-    this.dataService.recordWin(
-      this.players.find(p => p.score === winningScore).name
-    );
+    const winningPlayer = this.players.find(p => p.score === winningScore);
+
+    this.dataService.recordLoss(losingPlayer.id).subscribe();
+    this.dataService.recordWin(winningPlayer.id).subscribe();
   }
 
   getPlayers(): PlayerScore[] {

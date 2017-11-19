@@ -1,0 +1,7 @@
+db.players.updateMany(
+   { losses: { $gt: 0 } },
+   { 
+     $set: { losses: 0 },
+     $currentDate: { lastModified: true } 
+   }
+);

@@ -34,8 +34,11 @@ exports.updatePlayer = function(req, res) {
     req.body,
     { new: true },
     function(err, player) {
-      if (err) res.send(err);
-      res.json(player);
+      if (err) {
+        console.log(err);
+      } else {
+        res.json(player);
+      }
     }
   );
 };

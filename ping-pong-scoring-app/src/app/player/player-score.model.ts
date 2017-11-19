@@ -25,11 +25,7 @@ export class PlayerScore extends Player {
   }
 
   static extend(player: Player): PlayerScore {
-    const score = new PlayerScore(<PlayerContract>{
-      name: player.name,
-      wins: player.wins,
-      losses: player.losses
-    });
+    const score = new PlayerScore(player.getContract());
     return score;
   }
 
