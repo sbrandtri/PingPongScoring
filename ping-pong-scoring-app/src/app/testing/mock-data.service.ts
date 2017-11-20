@@ -22,10 +22,6 @@ export class MockDataService {
    * @returns {Player} The newly-added player.
    */
   addPlayer(playerName: string): Observable<Player> {
-    if (playerName == null || playerName.length === 0) {
-      return Observable.throw(new RangeError("Player name must be specified."));
-    }
-
     const newPlayer = this.mapContract(<PlayerContract>{ name: playerName });
     return Observable.of(newPlayer);
   }

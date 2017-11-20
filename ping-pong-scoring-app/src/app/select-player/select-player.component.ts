@@ -30,15 +30,7 @@ export class SelectPlayerComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    if (this.allPlayers == null || this.allPlayers.length === 0) {
-      this.data
-        .getPlayers()
-        .subscribe(
-          players => (this.allPlayers = this.sortPlayersByName(players))
-        );
-    } else {
       this.allPlayers = this.sortPlayersByName(this.allPlayers);
-    }
   }
 
   addPlayer(name: string): void {

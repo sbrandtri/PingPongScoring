@@ -24,6 +24,16 @@ describe("GameService", () => {
     })
   );
 
+  describe("Call start with only 1 player", () => {
+    it(
+      "should throw an error",
+      inject([GameService], (service: GameService) => {
+        const player = Player.create("brady");
+        expect(() => service.start([player])).toThrowError();
+      })
+    );
+  });
+
   describe("Call start with player1 null", () => {
     it(
       "should throw an error",
@@ -51,6 +61,8 @@ describe("GameService", () => {
         const player1 = Player.create("brady");
         const player2 = Player.create("bill");
         service.start([player1, player2]);
+        expect(service.player1.name).toBe(player1.name);
+        expect(service.player2.name).toBe(player2.name);
         expect(service.getPlayers().every(p => p.score === 0)).toBeTruthy();
         expect(service.nowServing().name).toBe(player1.name);
       })
