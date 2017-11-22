@@ -20,7 +20,7 @@ export class AppComponent implements OnInit {
 
   constructor(
     protected readonly game: GameService,
-    protected readonly text: TextService
+    readonly text: TextService
   ) {}
 
   ngOnInit(): void {}

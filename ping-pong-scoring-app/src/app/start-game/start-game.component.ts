@@ -14,13 +14,13 @@ export class StartGameComponent implements OnInit {
   @Output() navigate = new EventEmitter<string>();
   @Output() startGame = new EventEmitter<Player[]>();
 
-  protected allPlayers: Player[] = [];
-  protected player1: Player;
-  protected player2: Player;
+  allPlayers: Player[] = [];
+  player1: Player;
+  player2: Player;
 
   constructor(
     protected readonly data: DataService,
-    protected readonly text: TextService
+    readonly text: TextService
   ) { }
 
   ngOnInit() {

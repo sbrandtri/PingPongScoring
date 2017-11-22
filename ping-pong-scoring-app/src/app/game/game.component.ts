@@ -15,8 +15,8 @@ export class GameComponent implements OnInit {
   @Output() navigate = new EventEmitter<string>();
 
   constructor(
-    protected readonly game: GameService,
-    protected readonly text: TextService
+    readonly game: GameService,
+    readonly text: TextService
   ) { }
 
   ngOnInit() {

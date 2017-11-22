@@ -6,14 +6,15 @@ import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 
 import { AppComponent } from "./app.component";
 import { DataService } from "./data/data.service";
+import { GameComponent } from "./game/game.component";
 import { GameService } from "./game/game.service";
-import { TextService } from "./text/text.service";
 import { HomeComponent } from "./home/home.component";
+import { SelectPlayerComponent } from "./select-player/select-player.component";
 import { StandingsComponent } from "./standings/standings.component";
 import { StartGameComponent } from "./start-game/start-game.component";
-import { SelectPlayerComponent } from "./select-player/select-player.component";
-import { GameComponent } from "./game/game.component";
 import { MockGameDirective } from "./testing/mock-game.directive";
+import { MockHomeDirective } from "./testing/mock-home.directive";
+import { TextService } from "./text/text.service";
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { MockGameDirective } from "./testing/mock-game.directive";
     StartGameComponent,
     SelectPlayerComponent,
     GameComponent,
-    MockGameDirective
+    MockGameDirective,
+    MockHomeDirective
   ],
   imports: [
     BrowserModule,

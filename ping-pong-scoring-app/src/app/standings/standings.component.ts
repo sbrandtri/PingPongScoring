@@ -12,11 +12,11 @@ import { TextService } from "../text/text.service";
 export class StandingsComponent implements OnInit {
   @Output() navigate = new EventEmitter<string>();
 
-  protected standings: Player[] = [];
+  standings: Player[] = [];
 
   constructor(
     protected readonly data: DataService,
-    protected readonly text: TextService
+    readonly text: TextService
   ) { }
 
   ngOnInit() {

@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable } from "rxjs/Rx";
+import { Observable } from "rxjs/Observable";
 
 import { Player } from "../player/player.model";
 import { PlayerContract } from "../player/player-contract.interface";

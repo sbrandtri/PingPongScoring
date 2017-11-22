@@ -26,7 +26,7 @@ export class SelectPlayerComponent implements OnInit {
 
   constructor(
     protected readonly data: DataService,
-    protected readonly text: TextService
+    readonly text: TextService
   ) {}
 
   ngOnInit() {

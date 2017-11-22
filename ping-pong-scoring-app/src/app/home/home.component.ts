@@ -10,7 +10,7 @@ import { TextService } from "../text/text.service";
 export class HomeComponent implements OnInit {
   @Output() navigate = new EventEmitter<string>();
 
-  constructor(protected readonly text: TextService) { }
+  constructor(readonly text: TextService) { }
 
   ngOnInit() {
   }
