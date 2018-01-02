@@ -6,6 +6,7 @@ import { TestBed, inject } from "@angular/core/testing";
 
 import { DataService } from "./data.service";
 import { PlayerContract } from "../player/player-contract.interface";
+import { Player } from "../player/player.model";
 
 describe("DataService", () => {
   beforeEach(() => {
@@ -254,6 +255,94 @@ describe("DataService", () => {
           const req2 = httpMock.expectOne("http://localhost:8080/api/players");
           expect(req2.request.method).toEqual("GET");
           req2.flush(players);
+        }
+      )
+    );
+  });
+
+  describe("Call recordWin", () => {
+    const testPlayer: PlayerContract = {
+      _id: "abc123",
+      name: "Alice",
+      wins: 0,
+      losses: 0
+    };
+
+    it(
+      "increases the player's win total by 1",
+      inject(
+        [DataService, HttpTestingController],
+        (service: DataService, httpMock: HttpTestingController) => {
+          service.addPlayer(testPlayer.name).subscribe();
+          service.recordWin(testPlayer._id).subscribe(updatedPlayer => {
+            expect(updatedPlayer).toBeDefined();
+            expect(updatedPlayer.wins).toBeDefined();
+            expect(updatedPlayer.wins).toBe(testPlayer.wins + 1);
+            expect(updatedPlayer.losses).toBeDefined();
+            expect(updatedPlayer.losses).toBe(testPlayer.losses);
+          });
+          const req = httpMock.expectOne("http://localhost:8080/api/players");
+          expect(req.request.method).toEqual("POST");
+          req.flush(testPlayer);
+          const req2 = httpMock.expectOne(
+            "http://localhost:8080/api/player/" + testPlayer._id
+          );
+          expect(req2.request.method).toEqual("GET");
+          req2.flush(testPlayer);
+          const req3 = httpMock.expectOne(
+            "http://localhost:8080/api/player/" + testPlayer._id
+          );
+          expect(req3.request.method).toEqual("PUT");
+          req3.flush(<PlayerContract>{
+            _id: testPlayer._id,
+            name: testPlayer.name,
+            wins: testPlayer.wins + 1,
+            losses: testPlayer.losses
+          });
+        }
+      )
+    );
+  });
+
+  describe("Call recordLoss", () => {
+    const testPlayer: PlayerContract = {
+      _id: "abc123",
+      name: "Alice",
+      wins: 0,
+      losses: 0
+    };
+
+    it(
+      "increases the player's loss total by 1",
+      inject(
+        [DataService, HttpTestingController],
+        (service: DataService, httpMock: HttpTestingController) => {
+          service.addPlayer(testPlayer.name).subscribe();
+          service.recordWin(testPlayer._id).subscribe(updatedPlayer => {
+            expect(updatedPlayer).toBeDefined();
+            expect(updatedPlayer.wins).toBeDefined();
+            expect(updatedPlayer.wins).toBe(testPlayer.wins);
+            expect(updatedPlayer.losses).toBeDefined();
+            expect(updatedPlayer.losses).toBe(testPlayer.losses + 1);
+          });
+          const req = httpMock.expectOne("http://localhost:8080/api/players");
+          expect(req.request.method).toEqual("POST");
+          req.flush(testPlayer);
+          const req2 = httpMock.expectOne(
+            "http://localhost:8080/api/player/" + testPlayer._id
+          );
+          expect(req2.request.method).toEqual("GET");
+          req2.flush(testPlayer);
+          const req3 = httpMock.expectOne(
+            "http://localhost:8080/api/player/" + testPlayer._id
+          );
+          expect(req3.request.method).toEqual("PUT");
+          req3.flush(<PlayerContract>{
+            _id: testPlayer._id,
+            name: testPlayer.name,
+            wins: testPlayer.wins,
+            losses: testPlayer.losses + 1
+          });
         }
       )
     );
