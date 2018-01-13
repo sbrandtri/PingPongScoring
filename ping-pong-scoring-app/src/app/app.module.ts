@@ -6,6 +6,7 @@ import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 
 import { AppComponent } from "./app.component";
 import { DataService } from "./data/data.service";
+import { GameDataService } from "./data/game-data.service";
 import { GameComponent } from "./game/game.component";
 import { GameService } from "./game/game.service";
 import { HomeComponent } from "./home/home.component";
@@ -27,14 +28,9 @@ import { TextService } from "./text/text.service";
     MockGameDirective,
     MockHomeDirective
   ],
-  imports: [
-    BrowserModule,
-    FormsModule,
-    HttpClientModule,
-    NgbModule.forRoot()
-  ],
+  imports: [BrowserModule, FormsModule, HttpClientModule, NgbModule.forRoot()],
   providers: [
-    DataService,
+    { provide: DataService, useClass: GameDataService },
     GameService,
     TextService
   ],

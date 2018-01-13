@@ -1,25 +1,21 @@
+import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable } from "rxjs/Rx";
+import { Observable } from "rxjs/Observable";
 
-import { DataService } from "../data/data.service";
-import { Player } from "../player/player.model";
-import { PlayerContract } from "../player/player-contract.interface";
+import { DataService } from "./data.service";
+import { Player, PlayerContract } from "../player";
 
 /**
- * Mock implementation of the DataService
+ * Retrieves data from and updates data on the server.
  */
 @Injectable()
-export class MockDataService implements DataService {
-  private players: Player[] = [];
-  private nextId = 1;
-
-  calledRecordLoss = 0;
-  calledRecordWin = 0;
+export class GameDataService implements DataService {
+  private baseUrl = "http://localhost:8080/api/";
 
   /**
-   * Creates a new instance of the MockDataService
+   * Creates a new instance of the DataService
    */
-  constructor() {}
+  constructor(private readonly http: HttpClient) {}
 
   /**
    * Adds a new player
@@ -27,25 +23,35 @@ export class MockDataService implements DataService {
    * @returns {Player} The newly-added player.
    */
   addPlayer(playerName: string): Observable<Player> {
-    const newPlayer = this.mapContract(<PlayerContract>{ _id: this.getNextId(), name: playerName });
-    this.players.push(newPlayer);
-    return Observable.of(newPlayer);
+    if (playerName == null || playerName.length === 0) {
+      return Observable.throw(new RangeError("Player name must be specified."));
+    }
+
+    return this.http
+      .post<PlayerContract>(this.baseUrl + "players", {
+        name: playerName
+      })
+      .map(this.mapContract);
   }
 
   /**
-   * Gets a player by name
+   * Gets a player by ID
    * @param {string} playerId - The player's ID
    * @returns {Player} The player with the given name, or null if not found.
    */
   getPlayer(playerId: string): Observable<Player> {
-    return Observable.of(this.players.find(p => p.id === playerId));
+    return this.http
+      .get<PlayerContract>(this.baseUrl + "player/" + playerId)
+      .map(this.mapContract);
   }
 
   /**
    * Gets all of the players.
    */
   getPlayers(): Observable<Player[]> {
-    return Observable.of(this.players);
+    return this.http
+      .get<PlayerContract[]>(this.baseUrl + "players")
+      .map(players => players.map(p => this.mapContract(p)));
   }
 
   /**
@@ -62,10 +68,9 @@ export class MockDataService implements DataService {
    * @param {string} playerId - The player's ID
    */
   recordWin(playerId: string): Observable<Player> {
-    this.calledRecordWin++;
     return this.getPlayer(playerId).flatMap(player => {
       player.recordWin();
-      return Observable.of(player);
+      return this.updatePlayer(player.getContract());
     });
   }
 
@@ -74,33 +79,28 @@ export class MockDataService implements DataService {
    * @param {string} playerId - The player's ID
    */
   recordLoss(playerId: string): Observable<Player> {
-    this.calledRecordLoss++;
     return this.getPlayer(playerId).flatMap(player => {
       player.recordLoss();
-      return Observable.of(player);
+      return this.updatePlayer(player.getContract());
     });
   }
 
   /**
-   * Resets the mock service, initializing all internal data
+   * Updates a Player.
    */
-  reset(): void {
-    this.calledRecordLoss = 0;
-    this.calledRecordWin = 0;
-    this.players = [];
+  private updatePlayer(player: PlayerContract): Observable<Player> {
+    return this.http
+      .put<PlayerContract>(this.baseUrl + "player/" + player._id, player)
+      .map(this.mapContract);
   }
 
   /**
    * Maps a PlayerContract to a Player
    */
   private mapContract(contract: PlayerContract): Player {
+    if (contract == null || contract._id == null) {
+      return null;
+    }
     return new Player(contract);
-  }
-
-  /**
-   * Gets the next ID value
-   */
-  private getNextId(): string {
-    return (this.nextId++).toString();
   }
 }

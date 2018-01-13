@@ -5,14 +5,14 @@ import {
 import { TestBed, inject } from "@angular/core/testing";
 
 import { DataService } from "./data.service";
-import { PlayerContract } from "../player/player-contract.interface";
-import { Player } from "../player/player.model";
+import { GameDataService } from "./game-data.service";
+import { Player, PlayerContract } from "../player";
 
 describe("DataService", () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [DataService]
+      providers: [{provide: DataService, useClass: GameDataService}]
     });
   });
 

@@ -1,8 +1,7 @@
 import { EventEmitter, Injectable } from "@angular/core";
 
-import { DataService } from "../data/data.service";
-import { Player } from "../player/player.model";
-import { PlayerScore } from "../player/player-score.model";
+import { DataService } from "../data";
+import { Player, PlayerScore } from "../player";
 
 @Injectable()
 export class GameService {
@@ -111,7 +110,6 @@ export class GameService {
       .map(p => p.score)
       .reduce((a, b) => Math.max(a, b));
     const winningPlayer = this.players.find(p => p.score === winningScore);
-
     this.dataService.recordLoss(losingPlayer.id).subscribe();
     this.dataService.recordWin(winningPlayer.id).subscribe();
   }

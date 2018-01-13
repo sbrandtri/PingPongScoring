@@ -2,9 +2,9 @@ import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 
 import { GameComponent } from "./game.component";
 import { GameService } from "./game.service";
-import { DataService } from "../data/data.service";
-import { PlayerScore } from "../player/player-score.model";
-import { TextService } from "../text/text.service";
+import { DataService } from "../data";
+import { PlayerScore } from "../player";
+import { TextService } from "../text";
 
 describe("GameComponent", () => {
   let component: GameComponent;
