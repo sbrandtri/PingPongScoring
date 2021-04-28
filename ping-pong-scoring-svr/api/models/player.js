@@ -1,8 +1,7 @@
 "use strict";
-var mongoose = require("mongoose");
-var Schema = mongoose.Schema;
+const mongoose = require("mongoose");
 
-var PlayerSchema = new Schema({
+const playerSchema = new mongoose.Schema({
   name: {
     type: String,
     unique: true,
@@ -18,4 +17,4 @@ var PlayerSchema = new Schema({
   }
 });
 
-module.exports = mongoose.model("Players", PlayerSchema);
+module.exports = mongoose.model("Players", playerSchema);

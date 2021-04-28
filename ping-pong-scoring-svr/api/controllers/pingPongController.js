@@ -1,56 +1,39 @@
 "use strict";
 
-var mongoose = require("mongoose"),
-  Player = mongoose.model("Players");
+const mongoose = require("mongoose");
+require("../models/player");
 
-exports.listPlayers = function(req, res) {
-  Player.find({}, function(err, player) {
-    if (err) res.send(err);
-    res.json(player);
-  });
+const Player = mongoose.model("Players");
+
+exports.listPlayers = async (req, res) => {
+  const players = await Player.find();
+  res.json(players);
 };
 
-exports.createPlayer = function(req, res) {
-  var newPlayer = new Player(req.body);
-  newPlayer.save(function(err, player) {
-    if (err) res.send(err);
-    res.json(player);
-  });
+exports.createPlayer = async (req, res) => {
+  console.log("createPlayer:req.body", req.body);
+  const newPlayer = new Player(req.body);
+  const createdPlayer = await newPlayer.save();
+  res.json(createdPlayer);
 };
 
-exports.getPlayer = function(req, res) {
-  Player.findById(req.params.id, function(err, player) {
-    if (err) {
-      console.log(err);
-    } else {
-      res.json(player);
-    }
-  });
+exports.getPlayer = async (req, res) => {
+  const player = await Player.findById(req.params.id);
+  res.json(player);
 };
 
-exports.updatePlayer = function(req, res) {
-  Player.findOneAndUpdate(
+exports.updatePlayer = async (req, res) => {
+  const updatedPlayer = await Player.findOneAndUpdate(
     { _id: req.params.id },
     req.body,
-    { new: true },
-    function(err, player) {
-      if (err) {
-        console.log(err);
-      } else {
-        res.json(player);
-      }
-    }
-  );
+    { new: true });
+  res.json(updatedPlayer);
 };
 
-exports.deletePlayer = function(req, res) {
-  Player.remove(
+exports.deletePlayer = async (req, res) => {
+  await Player.remove(
     {
       _id: req.params.id
-    },
-    function(err, task) {
-      if (err) res.send(err);
-      res.json({ message: "Player successfully deleted" });
-    }
-  );
+    });
+  res.json({ message: "Player successfully deleted" });
 };
