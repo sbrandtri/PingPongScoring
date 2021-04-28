@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs/Observable";
+import { flatMap, map } from "rxjs/operators";
 
 import { DataService } from "./data.service";
 import { Player, PlayerContract } from "../player";
@@ -15,7 +16,7 @@ export class GameDataService implements DataService {
   /**
    * Creates a new instance of the DataService
    */
-  constructor(private readonly http: HttpClient) {}
+  constructor(private readonly http: HttpClient) { }
 
   /**
    * Adds a new player
@@ -31,7 +32,7 @@ export class GameDataService implements DataService {
       .post<PlayerContract>(this.baseUrl + "players", {
         name: playerName
       })
-      .map(this.mapContract);
+      .pipe(map(this.mapContract));
   }
 
   /**
@@ -42,7 +43,7 @@ export class GameDataService implements DataService {
   getPlayer(playerId: string): Observable<Player> {
     return this.http
       .get<PlayerContract>(this.baseUrl + "player/" + playerId)
-      .map(this.mapContract);
+      .pipe(map(this.mapContract));
   }
 
   /**
@@ -51,16 +52,18 @@ export class GameDataService implements DataService {
   getPlayers(): Observable<Player[]> {
     return this.http
       .get<PlayerContract[]>(this.baseUrl + "players")
-      .map(players => players.map(p => this.mapContract(p)));
+      .pipe(
+        map(players => players.map(p => this.mapContract(p)))
+      );
   }
 
   /**
    * Gets all of the players in descending order by win percentage.
    */
   getStandings(): Observable<Player[]> {
-    return this.getPlayers().map(players =>
+    return this.getPlayers().pipe(map(players =>
       players.sort((a, b) => b.winPercentage - a.winPercentage)
-    );
+    ));
   }
 
   /**
@@ -68,10 +71,10 @@ export class GameDataService implements DataService {
    * @param {string} playerId - The player's ID
    */
   recordWin(playerId: string): Observable<Player> {
-    return this.getPlayer(playerId).flatMap(player => {
+    return this.getPlayer(playerId).pipe(flatMap(player => {
       player.recordWin();
       return this.updatePlayer(player.getContract());
-    });
+    }));
   }
 
   /**
@@ -79,10 +82,10 @@ export class GameDataService implements DataService {
    * @param {string} playerId - The player's ID
    */
   recordLoss(playerId: string): Observable<Player> {
-    return this.getPlayer(playerId).flatMap(player => {
+    return this.getPlayer(playerId).pipe(flatMap(player => {
       player.recordLoss();
       return this.updatePlayer(player.getContract());
-    });
+    }));
   }
 
   /**
@@ -91,7 +94,7 @@ export class GameDataService implements DataService {
   private updatePlayer(player: PlayerContract): Observable<Player> {
     return this.http
       .put<PlayerContract>(this.baseUrl + "player/" + player._id, player)
-      .map(this.mapContract);
+      .pipe(map(this.mapContract));
   }
 
   /**
