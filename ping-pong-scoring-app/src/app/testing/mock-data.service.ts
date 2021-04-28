@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
-import { Observable } from "rxjs/Rx";
+import { Observable, of as observableOf } from "rxjs";
+import { map, mergeMap } from "rxjs/operators";
 
 import { DataService } from "../data/data.service";
 import { Player } from "../player/player.model";
@@ -29,7 +30,7 @@ export class MockDataService implements DataService {
   addPlayer(playerName: string): Observable<Player> {
     const newPlayer = this.mapContract(<PlayerContract>{ _id: this.getNextId(), name: playerName });
     this.players.push(newPlayer);
-    return Observable.of(newPlayer);
+    return observableOf(newPlayer);
   }
 
   /**
@@ -38,23 +39,23 @@ export class MockDataService implements DataService {
    * @returns {Player} The player with the given name, or null if not found.
    */
   getPlayer(playerId: string): Observable<Player> {
-    return Observable.of(this.players.find(p => p.id === playerId));
+    return observableOf(this.players.find(p => p.id === playerId));
   }
 
   /**
    * Gets all of the players.
    */
   getPlayers(): Observable<Player[]> {
-    return Observable.of(this.players);
+    return observableOf(this.players);
   }
 
   /**
    * Gets all of the players in descending order by win percentage.
    */
   getStandings(): Observable<Player[]> {
-    return this.getPlayers().map(players =>
+    return this.getPlayers().pipe(map(players =>
       players.sort((a, b) => b.winPercentage - a.winPercentage)
-    );
+    ));
   }
 
   /**
@@ -63,10 +64,10 @@ export class MockDataService implements DataService {
    */
   recordWin(playerId: string): Observable<Player> {
     this.calledRecordWin++;
-    return this.getPlayer(playerId).flatMap(player => {
+    return this.getPlayer(playerId).pipe(mergeMap(player => {
       player.recordWin();
-      return Observable.of(player);
-    });
+      return observableOf(player);
+    }));
   }
 
   /**
@@ -75,10 +76,10 @@ export class MockDataService implements DataService {
    */
   recordLoss(playerId: string): Observable<Player> {
     this.calledRecordLoss++;
-    return this.getPlayer(playerId).flatMap(player => {
+    return this.getPlayer(playerId).pipe(mergeMap(player => {
       player.recordLoss();
-      return Observable.of(player);
-    });
+      return observableOf(player);
+    }));
   }
 
   /**

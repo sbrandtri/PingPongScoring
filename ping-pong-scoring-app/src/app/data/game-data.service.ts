@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable } from "rxjs/Observable";
-import { flatMap, map } from "rxjs/operators";
+import {throwError as observableThrowError,  Observable } from 'rxjs';
+import { mergeMap, map } from "rxjs/operators";
 
 import { DataService } from "./data.service";
 import { Player, PlayerContract } from "../player";
@@ -25,7 +25,7 @@ export class GameDataService implements DataService {
    */
   addPlayer(playerName: string): Observable<Player> {
     if (playerName == null || playerName.length === 0) {
-      return Observable.throw(new RangeError("Player name must be specified."));
+      return observableThrowError(new RangeError("Player name must be specified."));
     }
 
     return this.http
@@ -71,7 +71,7 @@ export class GameDataService implements DataService {
    * @param {string} playerId - The player's ID
    */
   recordWin(playerId: string): Observable<Player> {
-    return this.getPlayer(playerId).pipe(flatMap(player => {
+    return this.getPlayer(playerId).pipe(mergeMap(player => {
       player.recordWin();
       return this.updatePlayer(player.getContract());
     }));
@@ -82,7 +82,7 @@ export class GameDataService implements DataService {
    * @param {string} playerId - The player's ID
    */
   recordLoss(playerId: string): Observable<Player> {
-    return this.getPlayer(playerId).pipe(flatMap(player => {
+    return this.getPlayer(playerId).pipe(mergeMap(player => {
       player.recordLoss();
       return this.updatePlayer(player.getContract());
     }));
