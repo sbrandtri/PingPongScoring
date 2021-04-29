@@ -28,7 +28,7 @@ import { TextService } from "./text/text.service";
     MockGameDirective,
     MockHomeDirective
   ],
-  imports: [BrowserModule, FormsModule, HttpClientModule, NgbModule.forRoot()],
+  imports: [BrowserModule, FormsModule, HttpClientModule, NgbModule],
   providers: [
     { provide: DataService, useClass: GameDataService },
     GameService,
