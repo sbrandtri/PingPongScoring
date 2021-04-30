@@ -8,7 +8,7 @@
   <tbody>
     <tr *ngFor="let player of game.getPlayers()">
       <th scope="row">
-        <i class="fa fa-chevron-circle-right" *ngIf="player.isServing"></i>
+        <i class="bi-chevron-right" *ngIf="player.isServing"></i>
       </th>
       <td>
         <div>{{ player.name }}</div>
@@ -16,12 +16,24 @@
       </td>
       <td>{{ player.score }}</td>
       <td>
-        <button class="btn btn-success" (click)="game.awardPoint(player)" [disabled]="game.isGameOver()">
+        <button
+          class="btn btn-success"
+          (click)="game.awardPoint(player)"
+          [disabled]="game.isGameOver()"
+        >
           {{ text.buttons.awardPoint }}
         </button>
       </td>
     </tr>
   </tbody>
 </table>
-<button class="btn btn-primary" (click)="game.saveResult()" [disabled]="!game.isGameOver()">{{ text.buttons.save }}</button>
-<button class="btn btn-primary" (click)="quitGame()">{{ text.buttons.quit }}</button>
+<button
+  class="btn btn-primary"
+  (click)="game.saveResult()"
+  [disabled]="!game.isGameOver()"
+>
+  {{ text.buttons.save }}
+</button>
+<button class="btn btn-primary" (click)="quitGame()">
+  {{ text.buttons.quit }}
+</button>
