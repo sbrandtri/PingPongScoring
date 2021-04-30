@@ -1,5 +1,5 @@
 import { NO_ERRORS_SCHEMA } from "@angular/core";
-import { TestBed, async } from "@angular/core/testing";
+import { TestBed, waitForAsync } from "@angular/core/testing";
 
 import { AppComponent } from "./app.component";
 import { GameService } from "./game/game.service";
@@ -9,7 +9,7 @@ describe("AppComponent", () => {
   let mockGameService: any;
 
   beforeEach(
-    async(() => {
+    waitForAsync(() => {
       mockGameService = jasmine.createSpyObj("mockGameService", ["start"]);
       TestBed.configureTestingModule({
         declarations: [AppComponent],
@@ -24,7 +24,7 @@ describe("AppComponent", () => {
 
   it(
     "should create the app",
-    async(() => {
+    waitForAsync(() => {
       const fixture = TestBed.createComponent(AppComponent);
       fixture.detectChanges();
       const app = fixture.debugElement.componentInstance;
@@ -34,7 +34,7 @@ describe("AppComponent", () => {
 
   it(
     "should start on the home page",
-    async(() => {
+    waitForAsync(() => {
       const fixture = TestBed.createComponent(AppComponent);
       const app = <AppComponent>fixture.debugElement.componentInstance;
       expect(app.currentPage).toEqual("Home");
@@ -44,7 +44,7 @@ describe("AppComponent", () => {
   describe("navigating to another page", () => {
     it(
       "should change the current page, if valid",
-      async(() => {
+      waitForAsync(() => {
         const fixture = TestBed.createComponent(AppComponent);
         const app = <AppComponent>fixture.debugElement.componentInstance;
         const nextPage = app.pages[1].name;
@@ -55,7 +55,7 @@ describe("AppComponent", () => {
 
     it(
       "should not change the current page, if not valid",
-      async(() => {
+      waitForAsync(() => {
         const fixture = TestBed.createComponent(AppComponent);
         const app = <AppComponent>fixture.debugElement.componentInstance;
         app.navigate("Bogus Page");

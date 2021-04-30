@@ -1,5 +1,5 @@
 import { DebugElement, NO_ERRORS_SCHEMA } from "@angular/core";
-import { async, ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
 import { By } from "@angular/platform-browser";
 import {
   NgbModule,
@@ -20,7 +20,7 @@ describe("SelectPlayerComponent", () => {
   let playerEl: DebugElement;
 
   beforeEach(
-    async(() => {
+    waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [SelectPlayerComponent],
         imports: [NgbModule],

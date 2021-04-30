@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
 
 import { GameComponent } from "./game.component";
 import { GameService } from "./game.service";
@@ -15,7 +15,7 @@ describe("GameComponent", () => {
   const players: PlayerScore[] = [ player1, player2 ];
 
   beforeEach(
-    async(() => {
+    waitForAsync(() => {
       mockGameService = jasmine.createSpyObj(
         "mockGameService",
         [

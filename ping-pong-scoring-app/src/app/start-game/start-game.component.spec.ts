@@ -1,5 +1,5 @@
 import { NO_ERRORS_SCHEMA } from "@angular/core";
-import { async, ComponentFixture, TestBed } from "@angular/core/testing";
+import { ComponentFixture, TestBed, waitForAsync } from "@angular/core/testing";
 
 import { StartGameComponent } from "./start-game.component";
 import { DataService } from "../data/data.service";
@@ -11,7 +11,7 @@ describe("StartGameComponent", () => {
   let fixture: ComponentFixture<StartGameComponent>;
 
   beforeEach(
-    async(() => {
+    waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [StartGameComponent],
         providers: [
