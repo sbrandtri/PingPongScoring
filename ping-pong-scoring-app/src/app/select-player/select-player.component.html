@@ -20,6 +20,6 @@
     {{ player.name }}
   </option>
 </select>
-<button class="btn btn-success btn-sm" #p="ngbPopover" placement="left" [ngbPopover]="playerEntry" popoverTitle="Enter Player Name">
+<button class="btn btn-success btn-sm" #p="ngbPopover" placement="left" [ngbPopover]="playerEntry" [autoClose]="false" popoverTitle="Enter Player Name">
   {{ text.buttons.addPlayer }}
 </button>
