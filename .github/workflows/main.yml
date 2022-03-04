@@ -25,11 +25,12 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
       
-      - uses: colbyhill21/angular-full-ci/@v1.0
+      #Commit includes fix for working_directory
+      - uses: colbyhill21/angular-full-ci/@af0bcf115609b15ec879d5c195a2ca270a4ca87a
         with:
           testcommand: run test:ci
           mocha: false
-          working_directory: ping-pong-scoring-app
+          working_directory: ./ping-pong-scoring-app
 
       # Runs a single command using the runners shell
       #- name: Run a one-line script
