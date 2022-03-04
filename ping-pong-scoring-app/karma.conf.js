@@ -44,7 +44,7 @@ module.exports = function (config) {
       },
       ChromeHeadlessCustom: {
         base: "ChromeHeadless",
-        flags: ["--disable-translate", "--disable-extensions"],
+        flags: ["--disable-translate", "--disable-extensions", "--no-sandbox"],
       },
     },
   });
