@@ -29,6 +29,7 @@ jobs:
         with:
           testcommand: run test:ci
           mocha: false
+          working_directory: ping-pong-scoring-app
 
       # Runs a single command using the runners shell
       #- name: Run a one-line script
